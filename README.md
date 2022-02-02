@@ -55,7 +55,7 @@ LineClassifier: ma za zadanie przydzielić klase wierszą
                 
                 
 ColumnClasifier:
-                ma za zadanie przydzielić nazwy kolumn 
+               &ensp ma za zadanie przydzielić nazwy kolumn 
                 na razie przydziela głównie za pomocą wierszy nad tabelką 
                 docelowo bedzie jeszcze korzystał z całej kolumny 
                 aby uwiarygonić poprzedni wynik bądz znaleść nazwe 
