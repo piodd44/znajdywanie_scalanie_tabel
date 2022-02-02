@@ -36,12 +36,15 @@ zapisanie do pliku csv
 
 Co odopowiada za co w programie 
 
-Reader: najważniejsza cześć programu w niej znajduje się funkcja która przyjmuje 
+Reader:
+        najważniejsza cześć programu w niej znajduje się funkcja która przyjmuje 
         ścieżke do pliku i zwraca scalone data_frame 
 
-find_start_end_table_index  -ma za zadanie wykryc tabelke (jej koniec i początek) 
+find_start_end_table_index
+                 ma za zadanie wykryc tabelke (jej koniec i początek) 
 
-make_class_row - korzysta z line_classifier aby każdemu wierszu nadać klase która jest pomocna przy znajdywaniu 
+make_class_row
+                 korzysta z line_classifier aby każdemu wierszu nadać klase która jest pomocna przy znajdywaniu 
                  poczatku i konca tabeli . obecnie są to klasy (start_2,start_1,start_0,non-recognize,empty) 
                  start_i - prawdopodobnie dane znajdują się o "i" miejsc w du
 
@@ -51,7 +54,8 @@ LineClassifier: ma za zadanie przydzielić klase wierszą
                 np. czy wiersz jest pusty czy wiersz wygloda jak by zaraz miała zacząć się tabelka itp 
                 
                 
-ColumnClasifier:ma za zadanie przydzielić nazwy kolumn 
+ColumnClasifier:
+                ma za zadanie przydzielić nazwy kolumn 
                 na razie przydziela głównie za pomocą wierszy nad tabelką 
                 docelowo bedzie jeszcze korzystał z całej kolumny 
                 aby uwiarygonić poprzedni wynik bądz znaleść nazwe 
@@ -63,7 +67,8 @@ ColumnClasifier:ma za zadanie przydzielić nazwy kolumn
                 będą czesto pojawiać się nazwy opakowań a w innych kolumnach już nie tak czesto albo wcale) 
                 
                 
-standard_string:po prostu pomaga w formatowaniu wszystkich stringów w ten sam sposób w programie
+standard_string:
+                po prostu pomaga w formatowaniu wszystkich stringów w ten sam sposób w programie
                 co na razie nie jest w pełni używane gdyż w niektórych miejsach wciaż jest lekki bałagan
                 
                 jak także posiada metode która zwraca czy dwa stringi są do siebie podobne 
