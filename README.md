@@ -13,10 +13,10 @@ są takie same i je bedzie scalac i nadawać im odpowiednie nazwy kolumn
 
 Program stara się nadać ujednolicone nazwy kolumn lecz 
 za pewne jeszcze nie działą to w pełni dobrze
-
-
-
-
+<br />
+<br />
+<br />
+<br />
 Pomysł na działą nie programu jest nastepujący
 
 otwarcie pliku i zapisanie go jako dataframe (pandas) 
