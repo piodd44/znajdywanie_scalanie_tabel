@@ -75,6 +75,7 @@ standard_string:
                 pomocne przy ustalaniu czy dwie tabelki są takie same 
                 (czy mają takie same opisy kolumn lub bardzo podobne gdyż czasem w nagłówkach kolumna mogą być literówki 
                 lecz wciaż powinny być uznane za takie same kolumny)
+                
 
 
 
