@@ -41,3 +41,9 @@ def test_zad_5():
     path = "zad_5.xlsx"
     save_path = "my_zad_5.csv"
     final_fun(path=path, save_path=save_path)
+
+
+test_zad_2()
+#test_zad_3()
+#test_zad_4()
+#test_zad_5()

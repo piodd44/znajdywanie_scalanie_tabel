@@ -204,7 +204,8 @@ def close_index_choose(pack):
 
 def make_good_columns(data_frame):
     data_frame = column_classifier.most_probably_names(data_frame)
-    data_frame = data_frame.drop(['empty'], axis=1)
+    if "empty" in data_frame.columns:
+        data_frame = data_frame.drop(['empty'], axis=1)
     return data_frame
 
 
@@ -215,37 +216,74 @@ def make_good_columns(data_frame):
 
 
 def give_data_frame_list(table_list):
-    headers_list = []
     for table in table_list:
         name = choose_name_from_lines(table.help_df)
         table.name = name
         headers = column_classifier.headers_from_upper_row(help_headers_list=table.help_df)
         table.headers = headers
-        headers_list.append(headers)
-    h1 = headers_list[0]
-    for h2 in headers_list:
-        if column_classifier.the_same_headers(header_1=h1, header_2=h2):
-            pass
-        else:
-            exit("tu są różne tabelki na razie tego nie rozwiązałem (: ale potem zrobie")
+    grouped_table = group_table_by_headers(table_list)
     data_df_list = []
+    for i, table_list in enumerate(grouped_table):
+        for table in table_list:
+            data_df = table.data_df
+            try:
+                data_df.columns = table.headers
+            except:
+                print(i, table.headers)
+            data_df_list.append(data_df)
+    for i, table_group in enumerate(grouped_table):
+        print("=================")
+        print("nagłówek grupy ", i)
+        print(table_group[0].headers)
+        print("=================")
+    print(len(data_df_list))
+    return data_df_list
+
+
+"dostaje tabelki w trakcie działania funkcji give_data_frame_list, tabelki mają nadane nagłówki "
+"funkcja ma zwrócić liste pogrupowanych tabelek"
+"czyli liste list "
+"[[tabelki grupy 1],[tabelki grupy 2],[tabelki grupy 3]]"
+
+"zakładamy przechodność relacji podobieństwa nagłówków"
+"czyli jeśli a~b i b~c to a~c co tak naprawde może nie być prawdą gdyż "
+"kkkkk~kkkka, kkkka~kkkaa ale kkkkk~/~kkkaa"
+"dzieki temu możemy też założyc że każdy nagłowek należy tylko do jednej grupy"
+
+
+def group_table_by_headers(table_list):
+    group_list = [[table_list[0]]]
+
     for table in table_list:
-        data_df = table.data_df
-        data_df.columns = table.headers
-        data_df_list.append(data_df)
-    data_frame = pd.concat(data_df_list, ignore_index=True)
-    return data_frame
+        new_group = True
+        h1 = table.headers
+        for group in group_list:
+            h2 = group[0].headers
+            if column_classifier.the_same_headers(header_1=h1, header_2=h2):
+                group.append(table)
+                new_group = False
+        if new_group:
+            group_list.append([table])
+    print(group_list)
+    print(len(group_list))
+    # exit("tu się kończy ")
+    return group_list
+
+
+"teraz funcka ni zwraca tego co powinna w sumie ale już zapisuje odzielnie rodzaje tabelek"
+"na końcu najelepiej żeby próbowała je scalic"
 
 
 def final_fun(path, save_path, start=0):
     table_list = give_table_list_from_xlms(path=path, start_sheet=start)
-    df_good = give_data_frame_list(table_list)
-    df_good_name = make_good_columns(data_frame=df_good)
-    if save_path[-3:] == "csv":
-        df_good_name.to_csv(save_path)
-    else:
-        save_path = save_path + ".csv"
-        df_good_name.to_csv(save_path)
+    df_good_list = give_data_frame_list(table_list)
+    for i, df_good in enumerate(df_good_list):
+        df_good_name = make_good_columns(data_frame=df_good)
+        if save_path[-3:] == "csv":
+            df_good_name.to_csv("_" + str(i) + "_" + save_path)
+        else:
+            save_path = save_path + ".csv"
+            df_good_name.to_csv("_" + str(i) + "_" + save_path)
     return df_good_name
 
 # test_1()

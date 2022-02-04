@@ -16,6 +16,7 @@ expected_name_1 = ['oznaczenie zadania', 'tytuł zadania', 'lp', 'opis', 'inn', 
 
 numerical = [str(x) for x in range(10)]
 
+
 class ColumnClassifier:
     def __init__(self):
         self.dictionary = MyDictionary()
@@ -221,9 +222,18 @@ class ColumnClassifier:
         "jak tabelka ma wszystkie nazwy to nie ma nan"
         # print("w funkcji find most")
         headers_from_help = []
+        counter_nan_list = []
+        row_values_list = []
         for i, row in headers_data_frame.iterrows():
-            if self.non_nan_in_row(row=row) and self.non_numerical(row=row):
-                headers_from_help = row.values
+            not_nan_counter = 0
+            for x in row.values:
+                standard_x = make_standard_string(x)
+                if standard_x != "nan":
+                    not_nan_counter += 1
+            counter_nan_list.append(not_nan_counter)
+            row_values_list.append(row.values)
+        the_best = np.argmax(counter_nan_list)
+        headers_from_help = row_values_list[the_best]
         return headers_from_help
 
     def the_same_headers(self, header_1, header_2, p=90):
@@ -237,6 +247,5 @@ class ColumnClassifier:
         for h_1, h_2 in zip(header_1, header_2):
             similarity_list.append(string_similarity(h_1, h_2))
         avg_sim = np.average(similarity_list)
-        # print(avg_sim)
         if avg_sim >= p:
             return True
