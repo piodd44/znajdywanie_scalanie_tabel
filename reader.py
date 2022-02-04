@@ -224,13 +224,18 @@ def give_data_frame_list(table_list):
     grouped_table = group_table_by_headers(table_list)
     data_df_list = []
     for i, table_list in enumerate(grouped_table):
+        group_table = []
         for table in table_list:
+            first_table = table_list[0]
             data_df = table.data_df
-            try:
-                data_df.columns = table.headers
-            except:
-                print(i, table.headers)
-            data_df_list.append(data_df)
+            data_df.columns = first_table.headers
+            group_table.append(data_df)
+        if len(group_table) > 1:
+            df_data_frame_group = pd.concat(group_table)
+            data_df_list.append(df_data_frame_group)
+        else:
+            df_data_frame_group = group_table[0]
+            data_df_list.append(df_data_frame_group)
     for i, table_group in enumerate(grouped_table):
         print("=================")
         print("nagłówek grupy ", i)
@@ -262,6 +267,13 @@ def group_table_by_headers(table_list):
             if column_classifier.the_same_headers(header_1=h1, header_2=h2):
                 group.append(table)
                 new_group = False
+                break
+            else:
+                print("============")
+                print("h1==", h1)
+                print("============")
+                print("h2==", h2)
+                print("==========")
         if new_group:
             group_list.append([table])
     print(group_list)

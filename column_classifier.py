@@ -221,14 +221,13 @@ class ColumnClassifier:
     def find_most_probably_table_headers(self, headers_data_frame):
         "jak tabelka ma wszystkie nazwy to nie ma nan"
         # print("w funkcji find most")
-        headers_from_help = []
         counter_nan_list = []
         row_values_list = []
         for i, row in headers_data_frame.iterrows():
             not_nan_counter = 0
             for x in row.values:
                 standard_x = make_standard_string(x)
-                if standard_x != "nan":
+                if standard_x != "nan" and self.non_numerical(standard_x):
                     not_nan_counter += 1
             counter_nan_list.append(not_nan_counter)
             row_values_list.append(row.values)
