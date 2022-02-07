@@ -48,7 +48,22 @@ try:
 except Exception as e:
     print(e)
 
-test_zad_2()
-test_zad_3()
-test_zad_4()
-test_zad_5()
+try:
+    test_zad_2()
+except Exception as e:
+    print(e)
+
+try:
+    test_zad_3()
+except Exception as e:
+    print(e)
+
+try:
+    test_zad_4()
+except Exception as e:
+    print(e)
+
+try:
+    test_zad_5()
+except Exception as e:
+    print(e)
