@@ -14,7 +14,6 @@ class Reader:
         self.column_classifier = column_classifier
 
     def open_xlms(self, path):
-        xl = pd.ExcelFile(path)
         data_frame = pd.read_excel(path)
         return data_frame
 
@@ -71,6 +70,7 @@ class Reader:
         print("skończyłem give_table_list_from_xlms")
         return table_df_list
 
+    "lista wierszy tuż nad danymi w tabeli"
     def help_headers_df(self, start, data_frame):
         if start - 3 >= 1:
             return data_frame[start - 3:start]
@@ -81,6 +81,7 @@ class Reader:
         else:
             return data_frame[start:start]
 
+    "stara się dobrać nazwe kolumn"
     def choose_name_from_lines(self, data_frame):
         nan_list_counter = []
         row_list = []
@@ -101,7 +102,7 @@ class Reader:
                 return standard
         return name
 
-    "plan taki ze wybieramy possible start ten dalszy o jeden jeśli jest"
+    "zwraca liste indeksów początków i końców tabel"
 
     def find_start_end_table_index(self, data_frame):
         is_test = False
@@ -122,6 +123,8 @@ class Reader:
             else:
                 start_end_list.append((start_index, end_index))
 
+    "znajduje start nastepnej tabeli"
+
     def find_next_start(self, start_index, row_list_class):
         cur_index = start_index
         row_index, row_class, row_value = row_list_class[cur_index]
@@ -139,6 +142,8 @@ class Reader:
             if cur_index > len(row_list_class) - 1:
                 return -1
         pass
+
+    "znajduje koniec tabeli"
 
     def find_end(self, start_index, row_list_class):
         cur_index = start_index
@@ -192,6 +197,7 @@ class Reader:
         # print(pack)
         return pack[-1][0] + pack[-1][1]
 
+    "ustalanie nazwy kolum przy scalaniu"
     def make_good_columns(self, data_frame):
         data_frame = self.column_classifier.most_probably_names(data_frame)
         if "empty" in data_frame.columns:
