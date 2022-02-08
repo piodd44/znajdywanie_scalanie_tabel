@@ -47,7 +47,6 @@ try:
     test_zad_1()
 except Exception as e:
     print(e)
-
 try:
     test_zad_2()
 except Exception as e:

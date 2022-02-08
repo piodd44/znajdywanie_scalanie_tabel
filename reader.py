@@ -154,6 +154,9 @@ class Reader:
             if type(row_value[numeric_column_index]) is not int:
                 return cur_index - 1
 
+    "wstepne przydzielanie wierszy do kategori"
+    "pomaga przy znajdowaniu startu tabeli"
+
     def make_class_row(self, data_frame):
         possible_start_0 = []
         possible_start_1 = []
@@ -174,6 +177,9 @@ class Reader:
                 possible_start_0.append((index_r, row_list))
             row_class_list.append((index_r, possible_class, row_list))
         return row_class_list
+
+    "przydatne przy debugowaniu"
+    "po prostu wypisuje wiersze w data_frame"
 
     def show_row_(self, data_frame):
         for index_r, row in data_frame.iterrows():
@@ -260,18 +266,25 @@ class Reader:
         print("liczba róznych tabel==", len(group_list))
         return group_list
 
-    "teraz funcka ni zwraca tego co powinna w sumie ale już zapisuje odzielnie rodzaje tabelek"
-    "na końcu najelepiej żeby próbowała je scalic"
+    "funkcja zwraca liste scalonych tabelek"
+    "list gdyż jeśli wykryje tabele róznego rodzaju"
+    "to każdą grupe scala osobno"
 
-    def final_fun(self, path, save_path, start=0):
+    "jeśli dostanie scieżke zapisu to zapisze także wyniki w formacie csv"
+
+    def final_fun(self, path, save_path=None, start=0, save=False):
+        if save_path is None and save == False:
+            raise Exception("podaj ścieżke zapisu pliku", save_path)
         table_list = self.give_table_list_from_xlms(path=path, start_sheet=start)
         df_good_list = self.give_data_frame_list(table_list)
-        for i, df_good in enumerate(df_good_list):
-            df_good_name = self.make_good_columns(data_frame=df_good)
-            if save_path[-3:] == "csv":
-                df_good_name.to_csv("_" + str(i) + "_" + save_path)
-            else:
-                save_path = save_path + ".csv"
-                df_good_name.to_csv("_" + str(i) + "_" + save_path)
-        return df_good_name
-
+        df_good_name_list = []
+        if save:
+            for i, df_good in enumerate(df_good_list):
+                df_good_name = self.make_good_columns(data_frame=df_good)
+                df_good_name_list.append(df_good_name)
+                if save_path[-3:] == "csv":
+                    df_good_name.to_csv("_" + str(i) + "_" + save_path)
+                else:
+                    save_path = save_path + ".csv"
+                    df_good_name.to_csv("_" + str(i) + "_" + save_path)
+        return df_good_name_list
